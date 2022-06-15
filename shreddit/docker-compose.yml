@@ -1,0 +1,14 @@
+version: "3.0"
+
+services:
+  shreddit:
+    container_name: shreddit
+    # image: mitchtalmadge/shreddit-dockerized:latest
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./config:/app/config
+    environment:
+      UID: 1000
+      GID: 1000
+      CRON: "*/5 * * * *"
