@@ -1,0 +1,17 @@
+version: "2"
+
+services:
+  bitcoind:
+    container_name: bitcoind
+    hostname: bitcoind
+    image: legacycode/bitcoind:latest
+    restart: unless-stopped
+    volumes: 
+      - /customFolder:/home/bitcoin/.bitcoin
+    ports: 
+      - 8333:8333
+    command: [
+      "-server",
+      "-txindex",
+    ]
+
