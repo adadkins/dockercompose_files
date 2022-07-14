@@ -1,0 +1,17 @@
+version: '2'
+services:
+  plex:
+    container_name: plex
+    image: linuxserver/plex:arm32v7-1.26.2
+    restart: unless-stopped
+    environment:
+      - TZ=America/Los_Angeles
+      - PLEX_CLAIM=claim-TiBSNx_h9bXphrpCrTrd
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+    network_mode: host
+    volumes:
+      - /media/pi/4ae37447-0eec-496a-9d49-4a39d8485f502/config:/config
+      - /media/pi/4ae37447-0eec-496a-9d49-4a39d8485f502/temp:/transcode
+      - /media/pi/4ae37447-0eec-496a-9d49-4a39d8485f502/library:/data
