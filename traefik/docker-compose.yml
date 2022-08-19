@@ -1,0 +1,90 @@
+version: '3'
+services:
+  traefik:
+      image: traefik:latest
+      restart: always
+      command:
+        - --accesslog
+        - --api.insecure=true
+        - --providers.docker
+        - --providers.docker.exposedbydefault=false
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      ports:
+        - "80:80"
+        - "8080:8080"
+      depends_on:
+        - db
+  reddit_comment_api:
+    image: ghcr.io/adadkins/reddit_comment_api:latest
+    restart: always
+    ports: 
+      - "8081:8080"
+    environment:
+      - PG_USER=postgres
+      - PG_PASSWORD=postgres
+      - PG_HOST=db
+      - PG_PORT=5432
+      - PG_DB_NAME=postgres
+    depends_on:
+      - db
+    networks:
+      - fullstack 
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.reddit_comment_api.entrypoints=web
+      - traefik.http.routers.reddit_comment_api.rule=Host(`redditapi.adadkins.com`)
+  shorturl:
+    image: ghcr.io/adadkins/url_shortener:latest
+    restart: always
+    ports: 
+      - "8082:8080"
+    environment:
+      - hostname=shorturl.adadkins.com
+      - PG_USER=postgres
+      - PG_PASSWORD=postgres
+      - PG_HOST=db
+      - PG_PORT=5432
+      - PG_DB_NAME=postgres
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.shorturl.entrypoints=web
+      - traefik.http.routers.shorturl.rule=Host(`shorturl.adadkins.com`)
+    depends_on:
+      - db
+    networks:
+      - fullstack 
+  reddit_comment_puller:
+    image: ghcr.io/adadkins/reddit_comment_puller:latest
+    restart: always
+    ports: 
+      - "8083:8080"
+    environment:
+      - PG_USER=postgres
+      - PG_PASSWORD=postgres
+      - PG_HOST=db
+      - PG_PORT=5432
+      - PG_DB_NAME=postgres
+    depends_on:
+      - db
+    networks:
+      - fullstack 
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+    networks:
+      - fullstack
+
+volumes:
+  db:
+    driver: local
+networks:
+  fullstack:
+    driver: bridge
