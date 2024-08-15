@@ -12,6 +12,6 @@ services:
       - VERSION=docker
     network_mode: host
     volumes:
-      - /media/pi/4ae37447-0eec-496a-9d49-4a39d8485f502/config:/config
-      - /media/pi/4ae37447-0eec-496a-9d49-4a39d8485f502/temp:/transcode
-      - /media/pi/4ae37447-0eec-496a-9d49-4a39d8485f502/library:/data
+      - /media/pi/Partition2TB/config:/config
+      - /media/pi/Partition2TB/temp:/transcode
+      - /media/pi/Partition2TB:/data
