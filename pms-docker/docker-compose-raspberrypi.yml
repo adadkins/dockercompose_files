@@ -2,7 +2,7 @@ version: '2'
 services:
   plex:
     container_name: plex
-    image: linuxserver/plex:arm32v7-1.26.2
+    image: linuxserver/plex:arm32v7-1.32.4
     restart: unless-stopped
     environment:
       - TZ=America/Los_Angeles
@@ -12,6 +12,6 @@ services:
       - VERSION=docker
     network_mode: host
     volumes:
-      - /media/pi/Partition2TB/config:/config
-      - /media/pi/Partition2TB/temp:/transcode
-      - /media/pi/Partition2TB:/data
+      - /media/pi/plex/config:/config
+      - /media/pi/plex/temp:/transcode
+      - /media/pi/plex:/data
