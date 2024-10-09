@@ -11,8 +11,8 @@ services:
             - NORDVPN_COUNTRY=CA
             - NORDVPN_CATEGORY=legacy_p2p
             - NORDVPN_PROTOCOL=tcp
-            - OPENVPN_USERNAME=***REMOVED***
-            - OPENVPN_PASSWORD=***REMOVED***
+            - OPENVPN_USERNAME=SERVICE_USERNAME
+            - OPENVPN_PASSWORD=SERVICE_PASSWORD
             - LOCAL_NETWORK=192.168.0.0/16
         logging:
             driver: json-file
